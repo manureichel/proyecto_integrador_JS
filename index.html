@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script
+      src="https://kit.fontawesome.com/f78eebe9c2.js"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://kit.fontawesome.com/f78eebe9c2.js"
+      crossorigin="anonymous"
+    ></script>
+    <link rel="stylesheet" href="style.css" />
+    <title>Task Manager</title>
+  </head>
+  <body>
+    <h1 class="main--title">Task Manager</h1>
+    <main class="main--container">
+      <div class="input--box">
+        <input
+          type="text"
+          name="tasks"
+          class="input--text"
+          placeholder="Ingrese tarea nueva"
+        />
+        <button class="add--task">+</button>
+      </div>
+      <ul class="task--list">
+        <li class="task--item">
+          <input type="checkbox" name="check--item" class="check--task" />
+          <p>Comprar yerba para el mate</p>
+          <i class="fa-solid fa-xmark"></i>
+        </li>
+        <li class="task--item">
+          <input type="checkbox" name="check--item" class="check--task" />
+          <p>Sacar a pasear al perro</p>
+          <i class="fa-solid fa-xmark"></i>
+        </li>
+        <li class="task--item">
+          <input type="checkbox" name="check--item" class="check--task" />
+          <p>Retirar compra de ML</p>
+          <i class="fa-solid fa-xmark"></i>
+        </li>
+        <li class="task--item">
+          <input type="checkbox" name="check--item" class="check--task" />
+          <p>Completar este coso</p>
+          <i class="fa-solid fa-xmark"></i>
+        </li>
+      </ul>
+
+      <div class="add--info">
+        <p class="left--items">4 tareas restantes</p>
+        <button class="add--buttons">Todos</button>
+        <button class="add--buttons">Activos</button>
+        <button class="add--buttons">Completados</button>
+        <button class="add--buttons">Limpiar Completados</button>
+      </div>
+    </main>
+    <script src="script.js"></script>
+  </body>
+</html>
