@@ -29,15 +29,17 @@ const checkList = () => {
 };
 
 const deleteTask = () => {
-  taskToDelete = prompt(`Qué número tarea desea eliminar?\n${fullTask}`);
   if (taskList.length === 0) {
     alert("La lista de tareas está vacía");
+    return;
   }
-  if (taskToDelete < taskList.length && taskList.length > 0) {
+  let taskToDelete = prompt(`Qué número tarea desea eliminar?\n${fullTask}`);
+  console.log(taskToDelete);
+  if (taskToDelete < taskList.length && taskToDelete >= 0 && taskToDelete) {
     deleted = taskList.splice(taskToDelete, 1);
     alert(`Se eliminó la tarea: "${deleted[0].task}"`);
+    updateFullTask();
   } else alert("El número de tarea ingresado no es válido");
-  updateFullTask();
 };
 
 do {
