@@ -1,12 +1,12 @@
 # 📝Task Manager 
 
-## 💻Simulador Interactivo. 
+## 💻Primera entrega del Proyecto Final
 
 En esta primer entrega ese presenta un simulador interactivo de un gestor de tareas. El mismo muestra al usuario un menú donde es posible añadir tareas nuevas, limpiar la lista de tareas o mostrar la misma.
 
-## 📊Update entrega Arrays:
+## 📊Funcionalidad de fecha y búsqueda
 
-En la entrega de arrays se implementa un array de objetos (por el momento con una solo propiedad) donde cada elemento del mismo es una tarea. A medida que el usuario ingresa tareas se genera el objeto correspondiente en el arreglo como elemento adicional. Se utiliza la longitud del array como control del número de tareas además de la posibilidad de especificar una tarea en específico a eliminar.
+Se agregan dos funciones que permiten registrar la fecha y hora en que se creó una tarea y la posibilidad de búsqueda a partir del ingreso de una palabra o frase.
 
 ## ✏️ Funcionalidades
 
