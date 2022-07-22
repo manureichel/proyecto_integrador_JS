@@ -1,12 +1,13 @@
 # 📝Task Manager 
 
-## 💻Primera entrega del Proyecto Final
+## 💻Interacción con HTML
 
-En esta primer entrega ese presenta un simulador interactivo de un gestor de tareas. El mismo muestra al usuario un menú donde es posible añadir tareas nuevas, limpiar la lista de tareas o mostrar la misma.
+En esta entrega se realiza la modificación del HTML a partir de la lista de tareas ingresadas por prompt. 
 
-## 📊Funcionalidad de fecha y búsqueda
+La actualización del DOM se realiza al salir de do-while que funciona como menú, de manera de actualizar los cambios que existan tanto de creación como de eliminación de tareas. 
 
-Se agregan dos funciones que permiten registrar la fecha y hora en que se creó una tarea y la posibilidad de búsqueda a partir del ingreso de una palabra o frase.
+A su vez se muestra en el HTML la cantidad de tareas restantes.
+
 
 ## ✏️ Funcionalidades
 

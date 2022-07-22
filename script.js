@@ -2,6 +2,37 @@ let input = "";
 let taskList = [];
 let fullTask = "";
 
+let taskListDOM = document.getElementById("task--list");
+let leftTasks = document.getElementById("left-text");
+
+const updateLeftTasks = (left) => {
+  leftTasks.innerText = `${left} tareas restantes`;
+};
+
+const updateTasksOnDOM = (taskToAdd) => {
+  if (taskToAdd) {
+    // si lo recibido no es undefined añado un item
+
+    if (taskList.length > 0) {
+      for (let task of taskList) {
+        let taskItem = document.createElement("div");
+
+        taskItem.innerHTML = `<li class="task--item">
+      <input type="checkbox" name="check--item" class="check--task" />
+      <p>${task.task}</p>
+      <i class="fa-solid fa-xmark"></i>
+      </li>`;
+
+        taskListDOM.appendChild(taskItem);
+      }
+    }
+  } else {
+    // sino, limpio la lista para actualizar por eliminación de task
+    taskListDOM.innerHTML = "";
+    updateLeftTasks(taskList.length);
+  }
+};
+
 // Función para obtener la fecha actual y agregar a la lista de tareas
 const getDate = () => {
   let date = new Date();
@@ -52,8 +83,8 @@ const cleanTaskList = () => {
 const addNewTask = (newTask) => {
   if (newTask !== "" && newTask) {
     taskList.push({ task: newTask, date: getDate() });
+    updateFullTask();
   }
-  updateFullTask();
 };
 
 const checkList = () => {
@@ -68,11 +99,12 @@ const deleteTask = () => {
     alert("La lista de tareas está vacía");
     return;
   }
-  let taskToDelete = prompt(`Qué número tarea desea eliminar?\n${fullTask}`);
+  let taskToDelete = prompt(`Qué número de tarea desea eliminar?\n${fullTask}`);
   if (taskToDelete < taskList.length && taskToDelete >= 0 && taskToDelete) {
     deleted = taskList.splice(taskToDelete, 1);
     alert(`Se eliminó la tarea: "${deleted[0].task}"`);
     updateFullTask();
+    updateTasksOnDOM();
   } else alert("El número de tarea ingresado no es válido");
 };
 
@@ -90,5 +122,8 @@ do {
     searchTask(taskList);
   } else if (input !== "f") {
     addNewTask(input);
+  } else if (input === "f") {
+    updateTasksOnDOM("all");
+    updateLeftTasks(taskList.length);
   }
 } while (input !== "f");
