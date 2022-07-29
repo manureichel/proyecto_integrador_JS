@@ -1,37 +1,67 @@
 let input = "";
 let taskList = [];
 let fullTask = "";
+let taskDomArray = [];
 
 let taskListDOM = document.getElementById("task--list");
 let leftTasks = document.getElementById("left-text");
+let addButton = document.getElementById("add-button");
+let inputText = document.getElementById("input-text");
 
-const updateLeftTasks = (left) => {
-  leftTasks.innerText = `${left} tareas restantes`;
+const updateLeftTasks = (left) =>
+  (leftTasks.innerText = `${left} tareas restantes`);
+
+updateLeftTasks(leftTasks.length ? taskList.length : 0); // si no está definido van 0 tareas restantes
+
+addButton.onclick = (e) => {
+  e.preventDefault();
+  addNewTask(inputText.value);
+  inputText.value = "";
+  updateTasksOnDOM(taskList);
+  updateLeftTasks(taskList.length);
 };
 
-const updateTasksOnDOM = (taskToAdd) => {
-  if (taskToAdd) {
-    // si lo recibido no es undefined añado un item
+const updateTasksOnDOM = (taskList) => {
+  if (taskList.length > 0) {
+    let taskItem = document.createElement("li");
 
-    if (taskList.length > 0) {
-      for (let task of taskList) {
-        let taskItem = document.createElement("div");
+    taskItem.id = `task-${taskList.length - 1}`;
 
-        taskItem.innerHTML = `<li class="task--item">
-      <input type="checkbox" name="check--item" class="check--task" />
-      <p>${task.task}</p>
-      <i class="fa-solid fa-xmark"></i>
+    taskItem.innerHTML = `<li class="task--item" id="task-${
+      taskList.length - 1
+    }">
+      <input type="checkbox" name="check--item" class="check--task" id="check-${
+        taskList.length - 1
+      }"/>
+      <p>${taskList[taskList.length - 1].task}</p>
+      <i class="fa-solid fa-xmark" id="delete-task-${taskList.length - 1}"></i>
       </li>`;
-
-        taskListDOM.appendChild(taskItem);
-      }
-    }
+    taskListDOM.appendChild(taskItem);
   } else {
-    // sino, limpio la lista para actualizar por eliminación de task
     taskListDOM.innerHTML = "";
     updateLeftTasks(taskList.length);
   }
 };
+
+// const updateTasksOnDOM = (taskList) => {
+//   if (taskList.length > 0) {
+//     let taskItem = document.createElement("div");
+
+//     taskItem.innerHTML = `<li class="task--item" id="task-${
+//       taskList.length - 1
+//     }">
+//       <input type="checkbox" name="check--item" class="check--task" id="check-${
+//         taskList.length - 1
+//       }"/>
+//       <p>${taskList[taskList.length - 1].task}</p>
+//       <i class="fa-solid fa-xmark" id="delete-task-${taskList.length - 1}"></i>
+//       </li>`;
+//     taskListDOM.appendChild(taskItem);
+//   } else {
+//     taskListDOM.innerHTML = "";
+//     updateLeftTasks(taskList.length);
+//   }
+// };
 
 // Función para obtener la fecha actual y agregar a la lista de tareas
 const getDate = () => {
@@ -83,14 +113,8 @@ const cleanTaskList = () => {
 const addNewTask = (newTask) => {
   if (newTask !== "" && newTask) {
     taskList.push({ task: newTask, date: getDate() });
+    console.log(taskList);
     updateFullTask();
-  }
-};
-
-const checkList = () => {
-  if (taskList.length === 0) alert("La lista de tareas está vacía");
-  else {
-    alert(`La lista tiene ${taskList.length} tareas:\n${fullTask}`);
   }
 };
 
@@ -108,22 +132,22 @@ const deleteTask = () => {
   } else alert("El número de tarea ingresado no es válido");
 };
 
-do {
-  input = prompt(
-    "Opciones:\nIngresar una nueva tarea o una de las siguientes opciones: \nm- Mostrar Tareas \nl- Limpiar la lista\nb-Borrar Tarea \ns-Buscar Tarea \nf- Finalizar"
-  );
-  if (input === "m") {
-    checkList();
-  } else if (input === "l") {
-    cleanTaskList();
-  } else if (input === "b") {
-    deleteTask();
-  } else if (input === "s") {
-    searchTask(taskList);
-  } else if (input !== "f") {
-    addNewTask(input);
-  } else if (input === "f") {
-    updateTasksOnDOM("all");
-    updateLeftTasks(taskList.length);
-  }
-} while (input !== "f");
+// do {
+//   input = prompt(
+//     "Opciones:\nIngresar una nueva tarea o una de las siguientes opciones: \nm- Mostrar Tareas \nl- Limpiar la lista\nb-Borrar Tarea \ns-Buscar Tarea \nf- Finalizar"
+//   );
+//   if (input === "m") {
+//     checkList();
+//   } else if (input === "l") {
+//     cleanTaskList();
+//   } else if (input === "b") {
+//     deleteTask();
+//   } else if (input === "s") {
+//     searchTask(taskList);
+//   } else if (input !== "f") {
+//     addNewTask(input);
+//   } else if (input === "f") {
+//     updateTasksOnDOM("all");
+//     updateLeftTasks(taskList.length);
+//   }
+// } while (input !== "f");
