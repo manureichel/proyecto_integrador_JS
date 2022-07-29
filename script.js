@@ -23,53 +23,56 @@ addButton.onclick = (e) => {
 };
 
 const updateTasksOnDOM = (taskList) => {
+  taskListDOM.innerHTML = "";
+
   if (taskList.length > 0) {
-    // li correspondiente a cada tarea
-    let taskItem = document.createElement("li");
-    taskItem.id = `task-${taskList.length - 1}`;
-    taskItem.className = "task--item";
+    for (let i in taskList) {
+      let taskItem = document.createElement("li");
+      taskItem.id = `task-${i}`;
+      taskItem.className = "task--item";
+      if (taskList[i].isCompleted)
+        taskItem.classList.add("task--item--completed");
 
-    // checkbox para marcar la tarea como completada
-    let taskCheckbox = document.createElement("input");
-    taskCheckbox.type = "checkbox";
-    taskCheckbox.id = `check-${taskList.length - 1}`;
-    taskCheckbox.className = "check--task";
+      // checkbox para marcar la tarea como completada
+      let taskCheckbox = document.createElement("input");
+      taskCheckbox.checked = taskList[i].isCompleted;
+      taskCheckbox.type = "checkbox";
+      taskCheckbox.id = `check-${i}`;
+      taskCheckbox.className = "check--task";
 
-    taskCheckbox.addEventListener("click", (e) => {
-      // falta agregar la lógica todavía
-      // acá se podría cambiar el css para cuando está completada
-      // o también llamar una función para reordenar la lista y que lo completado vaya al final.
-      if (taskCheckbox.checked) {
-        console.log(`Tarea ${e.target.id} completada`);
-      } else {
-        console.log(`Tarea ${e.target.id} no completada`);
-      }
-    });
+      taskCheckbox.addEventListener("click", (e) => {
+        if (taskCheckbox.checked) {
+          taskList[i].isCompleted = true;
+        } else {
+          taskList[i].isCompleted = false;
+        }
+        updateTasksOnDOM(taskList);
+      });
 
-    // contenido de la tarea
-    let taskText = document.createElement("p");
-    taskText.innerText = taskList[taskList.length - 1].task;
+      // contenido de la tarea
+      let taskText = document.createElement("p");
+      taskText.innerText = taskList[i].task;
 
-    // botón para eliminar la tarea
-    let deleteTaskButton = document.createElement("i");
-    deleteTaskButton.className = "fa-solid fa-xmark";
-    deleteTaskButton.id = `delete-task-${taskList.length - 1}`;
+      // botón para eliminar la tarea
+      let deleteTaskButton = document.createElement("i");
+      deleteTaskButton.className = "fa-solid fa-xmark";
+      deleteTaskButton.id = `delete-task-${i}`;
 
-    // Event listener para el botón de eliminar tarea
-    deleteTaskButton.addEventListener("click", (e) => {
-      e.preventDefault();
-      console.log("Tarea a eliminar: " + e.target.id);
-      taskPosition = e.target.id.split("-")[2];
-      console.log(taskPosition);
-      // deleteTask()
-    });
+      // Event listener para el botón de eliminar tarea
+      deleteTaskButton.addEventListener("click", (e) => {
+        e.preventDefault();
+        taskPosition = e.target.id.split("-")[2];
+        deleteTask(taskPosition);
+      });
 
-    // agrega los elementos al DOM
-    taskItem.appendChild(taskCheckbox);
-    taskItem.appendChild(taskCheckbox);
-    taskItem.appendChild(taskText);
-    taskItem.appendChild(deleteTaskButton);
-    taskListDOM.appendChild(taskItem);
+      // agrega los elementos al DOM
+      taskItem.appendChild(taskCheckbox);
+      taskItem.appendChild(taskCheckbox);
+      taskItem.appendChild(taskText);
+      taskItem.appendChild(deleteTaskButton);
+      updateLeftTasks(taskList.length);
+      taskListDOM.appendChild(taskItem);
+    }
   } else {
     taskListDOM.innerHTML = "";
     updateLeftTasks(taskList.length);
@@ -84,6 +87,18 @@ const getDate = () => {
   }/${date.getFullYear()}  -  ${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}`;
 };
 
+const addNewTask = (newTask) => {
+  if (newTask !== "" && newTask) {
+    taskList.push({ task: newTask, date: getDate(), isCompleted: false });
+  }
+};
+
+const deleteTask = (taskToDelete) => {
+  deleted = taskList.splice(taskToDelete, 1);
+  updateTasksOnDOM(taskList);
+};
+
+// Función que tomaba desde prompt, hay que implementarla con DOM
 const searchTask = (taskList) => {
   if (taskList.length === 0) {
     alert("La lista de tareas está vacía");
@@ -109,29 +124,4 @@ const searchTask = (taskList) => {
         foundedTasks
     );
   else alert("No existen coincidencias");
-};
-
-const cleanTaskList = () => {
-  taskList = [];
-  alert("Se ha limpiado la lista de tareas");
-};
-
-const addNewTask = (newTask) => {
-  if (newTask !== "" && newTask) {
-    taskList.push({ task: newTask, date: getDate(), isCompleted: false });
-  }
-};
-
-const deleteTask = () => {
-  if (taskList.length === 0) {
-    alert("La lista de tareas está vacía");
-    return;
-  }
-  let taskToDelete = prompt(`Qué número de tarea desea eliminar?\n${fullTask}`);
-  if (taskToDelete < taskList.length && taskToDelete >= 0 && taskToDelete) {
-    deleted = taskList.splice(taskToDelete, 1);
-    alert(`Se eliminó la tarea: "${deleted[0].task}"`);
-    updateFullTask();
-    updateTasksOnDOM();
-  } else alert("El número de tarea ingresado no es válido");
 };
