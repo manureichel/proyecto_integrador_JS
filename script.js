@@ -37,6 +37,9 @@ const updateTasksOnDOM = (taskList) => {
     taskCheckbox.className = "check--task";
 
     taskCheckbox.addEventListener("click", (e) => {
+      // falta agregar la lógica todavía
+      // acá se podría cambiar el css para cuando está completada
+      // o también llamar una función para reordenar la lista y que lo completado vaya al final.
       if (taskCheckbox.checked) {
         console.log(`Tarea ${e.target.id} completada`);
       } else {
@@ -56,7 +59,7 @@ const updateTasksOnDOM = (taskList) => {
     // Event listener para el botón de eliminar tarea
     deleteTaskButton.addEventListener("click", (e) => {
       e.preventDefault();
-      console.log("id=" + e.target.id);
+      console.log("Tarea a eliminar" + e.target.id);
       // acá llamamos a una función que elimine la tarea de la lista
     });
 
