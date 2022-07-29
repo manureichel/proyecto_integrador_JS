@@ -1,6 +1,5 @@
 let input = "";
 let taskList = [];
-let fullTask = "";
 let taskDomArray = [];
 
 let taskListDOM = document.getElementById("task--list");
@@ -59,8 +58,10 @@ const updateTasksOnDOM = (taskList) => {
     // Event listener para el botón de eliminar tarea
     deleteTaskButton.addEventListener("click", (e) => {
       e.preventDefault();
-      console.log("Tarea a eliminar" + e.target.id);
-      // acá llamamos a una función que elimine la tarea de la lista
+      console.log("Tarea a eliminar: " + e.target.id);
+      taskPosition = e.target.id.split("-")[2];
+      console.log(taskPosition);
+      // deleteTask()
     });
 
     // agrega los elementos al DOM
@@ -110,13 +111,6 @@ const searchTask = (taskList) => {
   else alert("No existen coincidencias");
 };
 
-const updateFullTask = () => {
-  fullTask = "";
-  taskList.forEach((element, index) => {
-    fullTask += `[${index}]: ${element.task}  -  ${element.date}\n`;
-  });
-};
-
 const cleanTaskList = () => {
   taskList = [];
   alert("Se ha limpiado la lista de tareas");
@@ -124,8 +118,7 @@ const cleanTaskList = () => {
 
 const addNewTask = (newTask) => {
   if (newTask !== "" && newTask) {
-    taskList.push({ task: newTask, date: getDate() });
-    updateFullTask();
+    taskList.push({ task: newTask, date: getDate(), isCompleted: false });
   }
 };
 
