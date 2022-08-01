@@ -1,6 +1,4 @@
-let input = "";
 let taskList = [];
-let taskDomArray = [];
 
 let taskListDOM = document.getElementById("task--list");
 let leftTasks = document.getElementById("left-text");
@@ -12,6 +10,17 @@ const updateLeftTasks = (left) =>
 
 updateLeftTasks(leftTasks.length ? taskList.length : 0); // si no está definido van 0 tareas restantes
 
+const loadTaskList = () => {
+  const taskListJSON = localStorage.getItem("taskList");
+  if (taskListJSON) {
+    taskList = JSON.parse(taskListJSON);
+    updateTasksOnDOM(taskList);
+    updateLeftTasks(taskList.length);
+  }
+};
+
+loadTaskList();
+
 addButton.onclick = (e) => {
   e.preventDefault();
   if (inputText.value !== "") {
@@ -19,10 +28,11 @@ addButton.onclick = (e) => {
     inputText.value = "";
     updateTasksOnDOM(taskList);
     updateLeftTasks(taskList.length);
+    localStorage.setItem("taskList", JSON.stringify(taskList));
   }
 };
 
-const updateTasksOnDOM = (taskList) => {
+function updateTasksOnDOM(taskList) {
   taskListDOM.innerHTML = "";
 
   if (taskList.length > 0) {
@@ -46,6 +56,7 @@ const updateTasksOnDOM = (taskList) => {
         } else {
           taskList[i].isCompleted = false;
         }
+        localStorage.setItem("taskList", JSON.stringify(taskList));
         updateTasksOnDOM(taskList);
       });
 
@@ -77,7 +88,7 @@ const updateTasksOnDOM = (taskList) => {
     taskListDOM.innerHTML = "";
     updateLeftTasks(taskList.length);
   }
-};
+}
 
 // Función para obtener la fecha actual y agregar a la lista de tareas
 const getDate = () => {
@@ -95,6 +106,7 @@ const addNewTask = (newTask) => {
 
 const deleteTask = (taskToDelete) => {
   deleted = taskList.splice(taskToDelete, 1);
+  localStorage.setItem("taskList", JSON.stringify(taskList));
   updateTasksOnDOM(taskList);
 };
 

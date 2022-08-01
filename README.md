@@ -1,12 +1,8 @@
 # 📝Task Manager 
 
-## 💻Entrega: Eventos
+## 💻Segunda Entrega de Proyecto
 
-Para esta entrega ya se encuentra funcionando la posibilidad de crear nuevas tareas a partir del ingreso del dato en la caja de texto y presionando el botón + o la tecla enter. 
-
-Se hicieron modificaciones en la función que creaba en DOM una tarea, ahora es más modular, se tiene para cada elemento que forma una tarea la variable correspondiente: checkbox, texto y botón de eliminación. Cuando se crea una tarea se le asigna un id a la misma y un event listener para el checkbox y botón de eliminación.
-
-Queda aún por implementar la lógica de eliminar una tarea y actualizar el DOM, además de marcarla como terminada con el checkbox. Por el momento se hace un console.log cuando se hace click en el botón o checkbox para verificar el event listener de cada uno de estos.
+Para esta segunda entrega se encuentra funcionando la carga y eliminación de tareas, así como el localStorage para mantener en memoria del navegador el arreglo de objetos que conforma la lista de datos.
 
 
 ## ✏️ Funcionalidades
