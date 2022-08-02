@@ -33,8 +33,8 @@ addButton.onclick = (e) => {
 };
 
 function updateTasksOnDOM(taskList) {
+  console.log(taskList);
   taskListDOM.innerHTML = "";
-
   if (taskList.length > 0) {
     for (let i in taskList) {
       let taskItem = document.createElement("li");
@@ -42,6 +42,11 @@ function updateTasksOnDOM(taskList) {
       taskItem.className = "task--item";
       if (taskList[i].isCompleted)
         taskItem.classList.add("task--item--completed");
+
+      // p para fecha
+      let taskDate = document.createElement("p");
+      taskDate.className = "task--date";
+      taskDate.innerText = taskList[i].date;
 
       // checkbox para marcar la tarea como completada
       let taskCheckbox = document.createElement("input");
@@ -78,7 +83,6 @@ function updateTasksOnDOM(taskList) {
 
       // agrega los elementos al DOM
       taskItem.appendChild(taskCheckbox);
-      taskItem.appendChild(taskCheckbox);
       taskItem.appendChild(taskText);
       taskItem.appendChild(deleteTaskButton);
       updateLeftTasks(taskList.length);
@@ -93,9 +97,15 @@ function updateTasksOnDOM(taskList) {
 // Función para obtener la fecha actual y agregar a la lista de tareas
 const getDate = () => {
   let date = new Date();
-  return `${date.getDate()}/${
-    date.getMonth() + 1
-  }/${date.getFullYear()}  -  ${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}`;
+  let min =
+    date.getMinutes() < 10 ? "0" + date.getMinutes() : date.getMinutes();
+  let hour = date.getHours() < 10 ? "0" + date.getHours() : date.getHours();
+  let day = date.getDate() < 10 ? "0" + date.getDate() : date.getDate();
+  let month =
+    date.getMonth() + 1 < 10
+      ? "0" + (date.getMonth() + 1)
+      : date.getMonth() + 1;
+  return `${day}/${month}/${date.getFullYear()}  -  ${hour}:${min}`;
 };
 
 const addNewTask = (newTask) => {
