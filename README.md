@@ -1,11 +1,16 @@
 # 📝Task Manager 
 
-## 💻Segunda Entrega de Proyecto
+## 💻 Entrega: Operadores Avanzados
 
-Para esta segunda entrega se encuentra funcionando la carga y eliminación de tareas, así como el localStorage para mantener en memoria del navegador el arreglo de objetos que conforma la lista de datos.
+Para esta segunda entrega se optimiza el código utilizando operadores avanzados.
 
+* Ya se venía utilizando operador ternario en otras entregas, pero se añade el mismo en otros if/else.
+* En la función que obtiene la fecha se realiza una desestructuración, lo que mejora la legibilidad.
+* Se utiliza el operador spread en la función de añadir nueva tarea.
+* Se eliminan algunos if innecesario, como el que verificaba que la longitud sea mayor que cero en la función de updateTasksOnDom. La misma se llama de manera controlada desde otras instancias, por lo que no es necesaria esa verificación.
+* Se agrega al DOM la fecha. 
 
-## ✏️ Funcionalidades
+## ✏️ Funcionalidades del proyecto
 
 La idea del proyecto de es crear una aplicación web de manejo de tareas. Donde el usuario pueda agregar nuevas tareas a una lista y gestionarla.
 

@@ -8,7 +8,7 @@ let inputText = document.getElementById("input-text");
 const updateLeftTasks = (left) =>
   (leftTasks.innerText = `${left} tareas restantes`);
 
-updateLeftTasks(leftTasks.length ? taskList.length : 0); // si no está definido van 0 tareas restantes
+updateLeftTasks(leftTasks.length ? taskList.length : 0); // si no está definido se muestra 0 tareas restantes
 
 const loadTaskList = () => {
   const taskListJSON = localStorage.getItem("taskList");
@@ -35,82 +35,83 @@ addButton.onclick = (e) => {
 function updateTasksOnDOM(taskList) {
   console.log(taskList);
   taskListDOM.innerHTML = "";
-  if (taskList.length > 0) {
-    for (let i in taskList) {
-      let taskItem = document.createElement("li");
-      taskItem.id = `task-${i}`;
-      taskItem.className = "task--item";
-      if (taskList[i].isCompleted)
-        taskItem.classList.add("task--item--completed");
+  for (let i in taskList) {
+    let taskItem = document.createElement("li");
+    taskItem.id = `task-${i}`;
+    taskItem.className = "task--item";
+    if (taskList[i].isCompleted)
+      taskItem.classList.add("task--item--completed");
 
-      // p para fecha
-      let taskDate = document.createElement("p");
-      taskDate.className = "task--date";
-      taskDate.innerText = taskList[i].date;
+    // p para fecha
+    let taskDate = document.createElement("p");
+    taskDate.className = "task--date";
+    taskDate.innerText = taskList[i].date;
 
-      // checkbox para marcar la tarea como completada
-      let taskCheckbox = document.createElement("input");
-      taskCheckbox.checked = taskList[i].isCompleted;
-      taskCheckbox.type = "checkbox";
-      taskCheckbox.id = `check-${i}`;
-      taskCheckbox.className = "check--task";
+    // checkbox para marcar la tarea como completada
+    let taskCheckbox = document.createElement("input");
+    taskCheckbox.checked = taskList[i].isCompleted;
+    taskCheckbox.type = "checkbox";
+    taskCheckbox.id = `check-${i}`;
+    taskCheckbox.className = "check--task";
 
-      taskCheckbox.addEventListener("click", (e) => {
-        if (taskCheckbox.checked) {
-          taskList[i].isCompleted = true;
-        } else {
-          taskList[i].isCompleted = false;
-        }
-        localStorage.setItem("taskList", JSON.stringify(taskList));
-        updateTasksOnDOM(taskList);
-      });
+    taskCheckbox.addEventListener("click", (e) => {
+      taskCheckbox.checked
+        ? (taskList[i].isCompleted = true)
+        : (taskList[i].isCompleted = false);
+      localStorage.setItem("taskList", JSON.stringify(taskList));
+      updateTasksOnDOM(taskList);
+    });
 
-      // contenido de la tarea
-      let taskText = document.createElement("p");
-      taskText.innerText = taskList[i].task;
+    // contenido de la tarea
+    let taskText = document.createElement("p");
+    taskText.innerText = taskList[i].task;
 
-      // botón para eliminar la tarea
-      let deleteTaskButton = document.createElement("i");
-      deleteTaskButton.className = "fa-solid fa-xmark";
-      deleteTaskButton.id = `delete-task-${i}`;
+    // botón para eliminar la tarea
+    let deleteTaskButton = document.createElement("i");
+    deleteTaskButton.className = "fa-solid fa-xmark";
+    deleteTaskButton.id = `delete-task-${i}`;
 
-      // Event listener para el botón de eliminar tarea
-      deleteTaskButton.addEventListener("click", (e) => {
-        e.preventDefault();
-        taskPosition = e.target.id.split("-")[2];
-        deleteTask(taskPosition);
-      });
+    // Event listener para el botón de eliminar tarea
+    deleteTaskButton.addEventListener("click", (e) => {
+      e.preventDefault();
+      taskPosition = e.target.id.split("-")[2];
+      deleteTask(taskPosition);
+    });
 
-      // agrega los elementos al DOM
-      taskItem.appendChild(taskCheckbox);
-      taskItem.appendChild(taskText);
-      taskItem.appendChild(deleteTaskButton);
-      updateLeftTasks(taskList.length);
-      taskListDOM.appendChild(taskItem);
-    }
-  } else {
-    taskListDOM.innerHTML = "";
+    // agrega los elementos al DOM
+    taskItem.appendChild(taskCheckbox);
+    taskItem.appendChild(taskText);
+    taskItem.appendChild(taskDate);
+    taskItem.appendChild(deleteTaskButton);
     updateLeftTasks(taskList.length);
+    taskListDOM.appendChild(taskItem);
   }
 }
 
 // Función para obtener la fecha actual y agregar a la lista de tareas
+
 const getDate = () => {
   let date = new Date();
-  let min =
-    date.getMinutes() < 10 ? "0" + date.getMinutes() : date.getMinutes();
-  let hour = date.getHours() < 10 ? "0" + date.getHours() : date.getHours();
-  let day = date.getDate() < 10 ? "0" + date.getDate() : date.getDate();
-  let month =
-    date.getMonth() + 1 < 10
-      ? "0" + (date.getMonth() + 1)
-      : date.getMonth() + 1;
-  return `${day}/${month}/${date.getFullYear()}  -  ${hour}:${min}`;
+  let { day, month, year, hour, min } = {
+    day: date.getDate() < 10 ? "0" + date.getDate() : date.getDate(),
+    month:
+      date.getMonth() + 1 < 10
+        ? "0" + (date.getMonth() + 1)
+        : date.getMonth() + 1,
+    year: date.getFullYear(),
+    hour: date.getHours() < 10 ? "0" + date.getHours() : date.getHours(),
+    min: date.getMinutes() < 10 ? "0" + date.getMinutes() : date.getMinutes(),
+  };
+
+  return `${day}/${month}/${year}  -  ${hour}:${min}`;
 };
 
 const addNewTask = (newTask) => {
   if (newTask !== "" && newTask) {
-    taskList.push({ task: newTask, date: getDate(), isCompleted: false });
+    taskList = [
+      ...taskList,
+      { task: newTask, date: getDate(), isCompleted: false },
+    ];
   }
 };
 
@@ -118,6 +119,7 @@ const deleteTask = (taskToDelete) => {
   deleted = taskList.splice(taskToDelete, 1);
   localStorage.setItem("taskList", JSON.stringify(taskList));
   updateTasksOnDOM(taskList);
+  updateLeftTasks(taskList.length);
 };
 
 // Función que tomaba desde prompt, hay que implementarla con DOM
