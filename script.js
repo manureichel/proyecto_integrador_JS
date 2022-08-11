@@ -112,6 +112,10 @@ const addNewTask = (newTask) => {
       ...taskList,
       { task: newTask, date: getDate(), isCompleted: false },
     ];
+    Toastify({
+      text: "Tarea agregada",
+      duration: 1500,
+      }).showToast();
   }
 };
 
