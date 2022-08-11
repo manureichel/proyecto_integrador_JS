@@ -5,7 +5,11 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="icon" type="img/x-icon" href="/img/favicon.ico" />
-    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css"
+    />
     <script
       src="https://kit.fontawesome.com/f78eebe9c2.js"
       crossorigin="anonymous"
@@ -30,6 +34,18 @@
         />
         <button class="add--task" id="add-button" type="submit">+</button>
       </form>
+      <form class="input--box" autocomplete="off">
+        <input
+          type="text"
+          name="search-tasks"
+          id="search-text"
+          class="input--text"
+          placeholder="Buscar una tarea"
+        />
+        <button class="add--task" id="search-button" type="submit">
+          <i class="fa-solid fa-magnifying-glass"></i>
+        </button>
+      </form>
       <div class="task--list" id="task--list"></div>
 
       <div class="add--info">
@@ -41,6 +57,9 @@
       </div>
     </main>
     <script src="script.js"></script>
-    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+    <script
+      type="text/javascript"
+      src="https://cdn.jsdelivr.net/npm/toastify-js"
+    ></script>
   </body>
 </html>

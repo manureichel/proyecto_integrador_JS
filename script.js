@@ -113,9 +113,16 @@ const addNewTask = (newTask) => {
       { task: newTask, date: getDate(), isCompleted: false },
     ];
     Toastify({
-      text: "Tarea agregada",
-      duration: 1500,
-      }).showToast();
+      text: `Nueva tarea creada`,
+      duration: 2500,
+      close: true,
+      gravity: "top",
+      position: "right",
+      stopOnFocus: true,
+      style: {
+        background: "linear-gradient(to right, #00b09b, #96c93d)",
+      },
+    }).showToast();
   }
 };
 
