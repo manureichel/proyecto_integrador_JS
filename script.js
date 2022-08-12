@@ -1,3 +1,7 @@
+const DateTime = luxon.DateTime;
+
+console.log(DateTime.local().toLocaleString(DateTime.DATE_FULL));
+
 let taskList = [];
 
 let taskListDOM = document.getElementById("task--list");
@@ -16,10 +20,18 @@ const loadTaskList = () => {
     taskList = JSON.parse(taskListJSON);
     updateTasksOnDOM(taskList);
     updateLeftTasks(taskList.length);
+    console.log(taskList);
   }
 };
 
 loadTaskList();
+
+//Función para intercambiar el orden de las tareas (Usada en el event listener de drag and drop)
+const interchange = (array, index1, index2) => {
+  [array[index1], array[index2]] = [array[index2], array[index1]];
+  console.log("lista: ", taskList);
+  localStorage.setItem("taskList", JSON.stringify(taskList));
+};
 
 addButton.onclick = (e) => {
   e.preventDefault();
@@ -33,11 +45,12 @@ addButton.onclick = (e) => {
 };
 
 function updateTasksOnDOM(taskList) {
-  console.log(taskList);
+  // console.log(taskList);
   taskListDOM.innerHTML = "";
   for (let i in taskList) {
     let taskItem = document.createElement("li");
     taskItem.id = `task-${i}`;
+    taskItem.setAttribute("data-id", i);
     taskItem.className = "task--item";
     if (taskList[i].isCompleted)
       taskItem.classList.add("task--item--completed");
@@ -81,7 +94,7 @@ function updateTasksOnDOM(taskList) {
     // agrega los elementos al DOM
     taskItem.appendChild(taskCheckbox);
     taskItem.appendChild(taskText);
-    taskItem.appendChild(taskDate);
+    // taskItem.appendChild(taskDate);
     taskItem.appendChild(deleteTaskButton);
     updateLeftTasks(taskList.length);
     taskListDOM.appendChild(taskItem);
@@ -160,3 +173,26 @@ const searchTask = (taskList) => {
     );
   else alert("No existen coincidencias");
 };
+
+Sortable.create(taskListDOM, {
+  group: {
+    name: "lista-tareas",
+  },
+  sort: true,
+  animation: 300,
+  easing: "cubic-bezier(0.34, 1.56, 0.64, 1)",
+
+  // Evento que se ejecuta cuando se termina de arrastrar un elemento
+  onEnd: function (event) {
+    event.to;
+    event.from;
+    interchange(taskList, event.oldIndex, event.newIndex);
+  },
+
+  store: {
+    set: function (sortable) {
+      const orden = sortable.toArray();
+      console.log(orden);
+    },
+  },
+});
