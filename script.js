@@ -1,6 +1,8 @@
-const DateTime = luxon.DateTime;
+// const DateTime = luxon.DateTime;
 
-console.log(DateTime.local().toLocaleString(DateTime.DATE_FULL));
+// console.log(DateTime.local().toLocaleString(DateTime.DATE_FULL));
+
+console.log("Welcome to the ToDo List!");
 
 let taskList = [];
 
@@ -11,8 +13,6 @@ let inputText = document.getElementById("input-text");
 
 const updateLeftTasks = (left) =>
   (leftTasks.innerText = `${left} tareas restantes`);
-
-updateLeftTasks(leftTasks.length ? taskList.length : 0); // si no está definido se muestra 0 tareas restantes
 
 const loadTaskList = () => {
   const taskListJSON = localStorage.getItem("taskList");
@@ -26,6 +26,8 @@ const loadTaskList = () => {
 
 loadTaskList();
 
+updateLeftTasks(leftTasks.length ? taskList.length : 0); // si no está definido se muestra 0 tareas restantes
+
 //Función para intercambiar el orden de las tareas (Usada en el event listener de drag and drop)
 const interchange = (array, index1, index2) => {
   [array[index1], array[index2]] = [array[index2], array[index1]];
@@ -34,6 +36,7 @@ const interchange = (array, index1, index2) => {
 };
 
 addButton.onclick = (e) => {
+  console.log("Toqué el botón! :D");
   e.preventDefault();
   if (inputText.value !== "") {
     addNewTask(inputText.value);
@@ -45,57 +48,82 @@ addButton.onclick = (e) => {
 };
 
 function updateTasksOnDOM(taskList) {
-  // console.log(taskList);
+  console.table(taskList);
   taskListDOM.innerHTML = "";
   for (let i in taskList) {
-    let taskItem = document.createElement("li");
+    let taskItem = document.createElement("div");
     taskItem.id = `task-${i}`;
     taskItem.setAttribute("data-id", i);
-    taskItem.className = "task--item";
+    taskItem.className = "card shadow mb-3 mt-4";
     if (taskList[i].isCompleted)
       taskItem.classList.add("task--item--completed");
 
-    // p para fecha
-    let taskDate = document.createElement("p");
-    taskDate.className = "task--date";
-    taskDate.innerText = taskList[i].date;
+    // card-body
+    let taskBody = document.createElement("div");
+    taskBody.className = "card-body";
 
-    // checkbox para marcar la tarea como completada
-    let taskCheckbox = document.createElement("input");
-    taskCheckbox.checked = taskList[i].isCompleted;
-    taskCheckbox.type = "checkbox";
-    taskCheckbox.id = `check-${i}`;
-    taskCheckbox.className = "check--task";
+    // card-text
+    let cardText = document.createElement("p");
+    cardText.textContent = taskList[i].task;
+    cardText.className = "card-text";
 
-    taskCheckbox.addEventListener("click", (e) => {
-      taskCheckbox.checked
-        ? (taskList[i].isCompleted = true)
-        : (taskList[i].isCompleted = false);
-      localStorage.setItem("taskList", JSON.stringify(taskList));
-      updateTasksOnDOM(taskList);
-    });
+    // button-group-flex
+    let buttonGroupFlex = document.createElement("div");
+    buttonGroupFlex.className =
+      "d-flex justify-content-between align-items-center";
 
-    // contenido de la tarea
-    let taskText = document.createElement("p");
-    taskText.innerText = taskList[i].task;
+    // button-group-flex-items
+    let buttonGroupFlexItems = document.createElement("div");
+    buttonGroupFlexItems.className = "btn-group-sm";
+    buttonGroupFlexItems.role = "group";
 
-    // botón para eliminar la tarea
-    let deleteTaskButton = document.createElement("i");
-    deleteTaskButton.className = "fa-solid fa-xmark";
-    deleteTaskButton.id = `delete-task-${i}`;
+    // edit-button
+    let editButton = document.createElement("button");
+    editButton.className = "btn btn-outline-primary mx-1";
+    editButton.type = "button";
+    let editIcon = document.createElement("i");
+    editIcon.className = "fas fa-edit";
+    editButton.appendChild(editIcon);
+
+    // check-button
+    let checkButton = document.createElement("button");
+    checkButton.className = "btn btn-outline-primary mx-1";
+    checkButton.type = "button";
+    let checkIcon = document.createElement("i");
+    checkIcon.className = "fas fa-check";
+    checkButton.appendChild(checkIcon);
+
+    // delete-button
+    let deleteButton = document.createElement("button");
+    deleteButton.className = "btn btn-outline-primary mx-1";
+    deleteButton.type = "button";
+    deleteButton.id = `delete-task-${i}`;
+    let deleteIcon = document.createElement("i");
+    deleteIcon.className = "fas fa-trash-alt";
+    deleteButton.appendChild(deleteIcon);
 
     // Event listener para el botón de eliminar tarea
-    deleteTaskButton.addEventListener("click", (e) => {
+    deleteButton.addEventListener("click", (e) => {
       e.preventDefault();
       taskPosition = e.target.id.split("-")[2];
       deleteTask(taskPosition);
     });
 
+    // created-text
+    let createdText = document.createElement("small");
+    createdText.className = "text-muted";
+    createdText.textContent = `Creado el ${taskList[i].date}`;
+
     // agrega los elementos al DOM
-    taskItem.appendChild(taskCheckbox);
-    taskItem.appendChild(taskText);
-    // taskItem.appendChild(taskDate);
-    taskItem.appendChild(deleteTaskButton);
+    taskBody.appendChild(cardText);
+    taskItem.appendChild(taskBody);
+    buttonGroupFlex.appendChild(buttonGroupFlexItems);
+    buttonGroupFlex.appendChild(createdText);
+    buttonGroupFlexItems.appendChild(editButton);
+    buttonGroupFlexItems.appendChild(checkButton);
+    buttonGroupFlexItems.appendChild(deleteButton);
+    taskBody.appendChild(buttonGroupFlex);
+
     updateLeftTasks(taskList.length);
     taskListDOM.appendChild(taskItem);
   }
@@ -128,12 +156,11 @@ const addNewTask = (newTask) => {
     Toastify({
       text: `Nueva tarea creada`,
       duration: 2500,
-      close: true,
-      gravity: "top",
-      position: "right",
+      gravity: "bottom",
+      position: "down",
       stopOnFocus: true,
       style: {
-        background: "linear-gradient(to right, #00b09b, #96c93d)",
+        background: "success",
       },
     }).showToast();
   }
@@ -193,6 +220,14 @@ Sortable.create(taskListDOM, {
     set: function (sortable) {
       const orden = sortable.toArray();
       console.log(orden);
+
+      //Reorder array according to a new order
+      let reordererTaskList = [];
+
+      for (const element of orden) {
+        console.log(parseInt(element));
+        reordererTaskList[parseInt(element)];
+      }
     },
   },
 });
