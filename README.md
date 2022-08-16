@@ -2,7 +2,8 @@
 
 ## 💻 Entrega: Librerías
 
-En esta entrega se incorporan librerías para agregar funcionalidades de manera sencilla al proyecto. Además se reemplaza el CSS utilizado hasta el momento por Bootstrap.
+En esta entrega se incorporan librerías para agregar funcionalidades de manera sencilla al proyecto. Además se reemplaza el CSS utilizado hasta el momento por Bootstrap. 
+Se incorporan las funcionalidades de edición de tareas y mostrar filtrando por Todas, Finalizadas y pendientes.
 
 Las librerías agregadas son:
 
@@ -13,6 +14,10 @@ Anteriormente ya se trabajaba con fechas mediante el objeto Date incluído de ma
 ### 📤 Toastify 
 
 Se agrega mediante Toastify JS un mensaje simple cuando se crea correctamente una tarea.
+
+### ⁉️ SweetAlert2
+
+Con Sweet Alert implementé facilmente modales utilizados para la edición de tareas y para verificar que realmente se quiera eliminar una tarea.
 
 ### 🔀 Sortable
 

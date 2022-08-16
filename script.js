@@ -61,6 +61,14 @@ addButton.onclick = (e) => {
     updateTasksOnDOM(taskList);
     updateLeftTasks(taskList.length);
     localStorage.setItem("taskList", JSON.stringify(taskList));
+  } else {
+    //sweet alert para que no se pueda crear una tarea vacía
+    Swal.fire({
+      icon: "error",
+      title: "Oops...",
+      text: "¡No puedes crear una tarea vacía!",
+      timer: 2500,
+    });
   }
 };
 
@@ -118,11 +126,15 @@ function updateTasksOnDOM(taskList) {
     deleteButton.id = `delete-task-${i}`;
     let deleteIcon = document.createElement("i");
     deleteIcon.className = "fas fa-trash-alt";
+    deleteIcon.id = `delete-task-${i}`;
     deleteButton.appendChild(deleteIcon);
 
     // Event listener para el botón de eliminar tarea
     deleteButton.addEventListener("click", (e) => {
       e.preventDefault();
+      console.log(e.target.id);
+      taskPosition = e.target.id.split("-")[2];
+
       Swal.fire({
         title: "¿Estás seguro que deseas borrar la tarea?",
         text: "Se eliminará permanentemente",
@@ -134,7 +146,7 @@ function updateTasksOnDOM(taskList) {
         confirmButtonText: "¡Sí, borrala!",
       }).then((result) => {
         if (result.isConfirmed) {
-          taskPosition = e.target.id.split("-")[2];
+          console.log("voy a borrar: ", taskPosition);
           deleteTask(taskPosition);
           Swal.fire({
             title: "¡Borrada!",
@@ -224,20 +236,6 @@ const addNewTask = (newTask) => {
 };
 
 const deleteTask = (taskToDelete) => {
-  Swal.fire({
-    title: "Are you sure?",
-    text: "You won't be able to revert this!",
-    icon: "warning",
-    showCancelButton: true,
-    confirmButtonColor: "#3085d6",
-    cancelButtonColor: "#d33",
-    confirmButtonText: "Yes, delete it!",
-  }).then((result) => {
-    if (result.isConfirmed) {
-      Swal.fire("Deleted!", "Your file has been deleted.", "success");
-    }
-  });
-
   deleted = taskList.splice(taskToDelete, 1);
   localStorage.setItem("taskList", JSON.stringify(taskList));
   updateTasksOnDOM(taskList);
@@ -264,15 +262,19 @@ Sortable.create(taskListDOM, {
   store: {
     set: function (sortable) {
       const orden = sortable.toArray();
-      // console.log(orden);
+      console.log(orden);
 
       //Reorder array according to a new order
       let reordererTaskList = [];
 
-      for (const element of orden) {
-        // console.log(parseInt(element));
-        reordererTaskList[parseInt(element)];
+      for (let i = 0; i < orden.length; i++) {
+        console.log(parseInt(orden[i]));
+        reordererTaskList[i] = taskList[parseInt(orden[i])];
       }
+      taskList = structuredClone(reordererTaskList);
+      localStorage.setItem("taskList", JSON.stringify(taskList));
+      updateTasksOnDOM(taskList);
+      console.log("taskList", taskList);
     },
   },
 });
