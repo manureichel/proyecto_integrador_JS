@@ -16,17 +16,17 @@ let showCompletedButton = document.getElementById("show-completed-button");
 
 showAllButton.addEventListener("click", () => {
   updateTasksOnDOM(taskList);
-})
+});
 
-showActiveButton.addEventListener("click", ()=>{
-  const taskFiltrada = taskList.filter(task => !task.isCompleted);
+showActiveButton.addEventListener("click", () => {
+  const taskFiltrada = taskList.filter((task) => !task.isCompleted);
   updateTasksOnDOM(taskFiltrada);
-} )
+});
 
-showCompletedButton.addEventListener("click", ()=> {
-  const taskFiltrada = taskList.filter(task => task.isCompleted);
+showCompletedButton.addEventListener("click", () => {
+  const taskFiltrada = taskList.filter((task) => task.isCompleted);
   updateTasksOnDOM(taskFiltrada);
-})
+});
 
 const updateLeftTasks = (left) =>
   (leftTasks.innerText = `${left} tareas restantes`);
@@ -73,8 +73,9 @@ function updateTasksOnDOM(taskList) {
     taskItem.id = `task-${i}`;
     taskItem.setAttribute("data-id", i);
     taskItem.className = "card shadow mb-3 mt-4";
-    taskList[i].isCompleted ? taskItem.classList.add("text-success","border-success") : ""
-    
+    taskList[i].isCompleted
+      ? taskItem.classList.add("text-success", "border-success")
+      : "";
 
     // card-body
     let taskBody = document.createElement("div");
@@ -133,7 +134,6 @@ function updateTasksOnDOM(taskList) {
       localStorage.setItem("taskList", JSON.stringify(taskList));
       updateTasksOnDOM(taskList);
     });
-    
 
     // created-text
     let createdText = document.createElement("small");
@@ -169,7 +169,7 @@ const addNewTask = (newTask) => {
     Toastify({
       text: `Nueva tarea creada`,
       duration: 2500,
-      gravity: "bottom",
+      gravity: "top",
       position: "down",
       stopOnFocus: true,
       style: {
@@ -191,6 +191,8 @@ Sortable.create(taskListDOM, {
     name: "lista-tareas",
   },
   sort: true,
+  delay: 200,
+  delayOnTouchOnly: false,
   animation: 300,
   easing: "cubic-bezier(0.34, 1.56, 0.64, 1)",
 
