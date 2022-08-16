@@ -1,14 +1,22 @@
 # 📝Task Manager 
 
-## 💻 Entrega: Operadores Avanzados
+## 💻 Entrega: Librerías
 
-Para esta segunda entrega se optimiza el código utilizando operadores avanzados.
+En esta entrega se incorporan librerías para agregar funcionalidades de manera sencilla al proyecto. Además se reemplaza el CSS utilizado hasta el momento por Bootstrap.
 
-* Ya se venía utilizando operador ternario en otras entregas, pero se añade el mismo en otros if/else.
-* En la función que obtiene la fecha se realiza una desestructuración, lo que mejora la legibilidad.
-* Se utiliza el operador spread en la función de añadir nueva tarea.
-* Se eliminan algunos if innecesario, como el que verificaba que la longitud sea mayor que cero en la función de updateTasksOnDom. La misma se llama de manera controlada desde otras instancias, por lo que no es necesaria esa verificación.
-* Se agrega al DOM la fecha. 
+Las librerías agregadas son:
+
+### ⏱️ Luxon
+
+Anteriormente ya se trabajaba con fechas mediante el objeto Date incluído de manera nativa en JS. Ahora se incluye Luxon para obtener de manera facil textos relativos de tiempo. De esta manera se agregan a cada tarea strings relacionados al tiempo que pasó desde que se creó la tarea.
+
+### 📤 Toastify 
+
+Se agrega mediante Toastify JS un mensaje simple cuando se crea correctamente una tarea.
+
+### 🔀 Sortable
+
+Sortable es una librería que permite convertir una sección de contenido, como un div, en un objeto arrastrable. Se implementa esta librería para arrastrar las tareas y reordenarlas. Se trabajó además con [Easings](https://easings.net/) para la animación a la hora de arrastrar.
 
 ## ✏️ Funcionalidades del proyecto
 
