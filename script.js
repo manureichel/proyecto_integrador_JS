@@ -67,8 +67,7 @@ addButton.onclick = (e) => {
 function updateTasksOnDOM(taskList) {
   console.table(taskList);
   taskListDOM.innerHTML = "";
-  // for (let i in taskList) {
-  for (let i = taskList.length - 1; i >= 0; i--) {
+  for (let i in taskList) {
     let taskItem = document.createElement("div");
     taskItem.id = `task-${i}`;
     taskItem.setAttribute("data-id", i);
@@ -192,7 +191,7 @@ Sortable.create(taskListDOM, {
   },
   sort: true,
   delay: 200,
-  delayOnTouchOnly: false,
+  delayOnTouchOnly: true,
   animation: 300,
   easing: "cubic-bezier(0.34, 1.56, 0.64, 1)",
 
