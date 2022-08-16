@@ -2,7 +2,10 @@
 
 // console.log(DateTime.local().toLocaleString(DateTime.DATE_FULL));
 
-console.log("Welcome to the ToDo List!");
+const DateTime = luxon.DateTime;
+
+const timestampToRelativeTime = (timestamp) =>
+  DateTime.fromMillis(timestamp).minus({ seconds: 1 }).toRelative();
 
 let taskList = [];
 
@@ -10,6 +13,10 @@ let taskListDOM = document.getElementById("task--list");
 let leftTasks = document.getElementById("left-text");
 let addButton = document.getElementById("add-button");
 let inputText = document.getElementById("input-text");
+let searchBox = document.getElementById("search-box");
+let showAllButton = document.getElementById("show-all-button");
+let showActiveButton = document.getElementById("show-active-button");
+let showCompletedButton = document.getElementById("show-completed-button");
 
 const updateLeftTasks = (left) =>
   (leftTasks.innerText = `${left} tareas restantes`);
@@ -20,7 +27,7 @@ const loadTaskList = () => {
     taskList = JSON.parse(taskListJSON);
     updateTasksOnDOM(taskList);
     updateLeftTasks(taskList.length);
-    console.log(taskList);
+    console.log(taskList ? taskList : "No hay tareas");
   }
 };
 
@@ -28,15 +35,16 @@ loadTaskList();
 
 updateLeftTasks(leftTasks.length ? taskList.length : 0); // si no está definido se muestra 0 tareas restantes
 
-//Función para intercambiar el orden de las tareas (Usada en el event listener de drag and drop)
-const interchange = (array, index1, index2) => {
-  [array[index1], array[index2]] = [array[index2], array[index1]];
-  console.log("lista: ", taskList);
-  localStorage.setItem("taskList", JSON.stringify(taskList));
+// event listener para searchBox
+searchBox.onkeyup = (e) => {
+  const searchText = e.target.value.toLowerCase();
+  const filteredTasks = taskList.filter((task) =>
+    task.task.toLowerCase().includes(searchText)
+  );
+  updateTasksOnDOM(filteredTasks);
 };
 
 addButton.onclick = (e) => {
-  console.log("Toqué el botón! :D");
   e.preventDefault();
   if (inputText.value !== "") {
     addNewTask(inputText.value);
@@ -50,7 +58,8 @@ addButton.onclick = (e) => {
 function updateTasksOnDOM(taskList) {
   console.table(taskList);
   taskListDOM.innerHTML = "";
-  for (let i in taskList) {
+  // for (let i in taskList) {
+  for (let i = taskList.length - 1; i >= 0; i--) {
     let taskItem = document.createElement("div");
     taskItem.id = `task-${i}`;
     taskItem.setAttribute("data-id", i);
@@ -112,7 +121,7 @@ function updateTasksOnDOM(taskList) {
     // created-text
     let createdText = document.createElement("small");
     createdText.className = "text-muted";
-    createdText.textContent = `Creado el ${taskList[i].date}`;
+    createdText.textContent = timestampToRelativeTime(taskList[i].date);
 
     // agrega los elementos al DOM
     taskBody.appendChild(cardText);
@@ -129,29 +138,16 @@ function updateTasksOnDOM(taskList) {
   }
 }
 
-// Función para obtener la fecha actual y agregar a la lista de tareas
-
-const getDate = () => {
-  let date = new Date();
-  let { day, month, year, hour, min } = {
-    day: date.getDate() < 10 ? "0" + date.getDate() : date.getDate(),
-    month:
-      date.getMonth() + 1 < 10
-        ? "0" + (date.getMonth() + 1)
-        : date.getMonth() + 1,
-    year: date.getFullYear(),
-    hour: date.getHours() < 10 ? "0" + date.getHours() : date.getHours(),
-    min: date.getMinutes() < 10 ? "0" + date.getMinutes() : date.getMinutes(),
-  };
-
-  return `${day}/${month}/${year}  -  ${hour}:${min}`;
-};
-
 const addNewTask = (newTask) => {
   if (newTask !== "" && newTask) {
     taskList = [
       ...taskList,
-      { task: newTask, date: getDate(), isCompleted: false },
+      // { task: newTask, date: getDate(), isCompleted: false },
+      {
+        task: newTask,
+        date: Date.now(),
+        isCompleted: false,
+      },
     ];
     Toastify({
       text: `Nueva tarea creada`,
@@ -173,34 +169,6 @@ const deleteTask = (taskToDelete) => {
   updateLeftTasks(taskList.length);
 };
 
-// Función que tomaba desde prompt, hay que implementarla con DOM
-const searchTask = (taskList) => {
-  if (taskList.length === 0) {
-    alert("La lista de tareas está vacía");
-    return;
-  }
-
-  do {
-    wordToSearch = prompt("Ingrese la tarea a buscar: ");
-  } while (wordToSearch === "");
-
-  let foundedTasks = "";
-  let found = false;
-
-  taskList.forEach((element, index) => {
-    if (element.task.toLowerCase().search(wordToSearch.toLowerCase()) != -1) {
-      foundedTasks += `${index}: ${element.task}  -  ${element.date}\n`;
-      found = true;
-    }
-  });
-  if (found)
-    alert(
-      `Las siguientes tareas contienen la palabra \"${wordToSearch}\" \n` +
-        foundedTasks
-    );
-  else alert("No existen coincidencias");
-};
-
 Sortable.create(taskListDOM, {
   group: {
     name: "lista-tareas",
@@ -213,7 +181,7 @@ Sortable.create(taskListDOM, {
   onEnd: function (event) {
     event.to;
     event.from;
-    interchange(taskList, event.oldIndex, event.newIndex);
+    // interchange(taskList, event.oldIndex, event.newIndex);
   },
 
   store: {
