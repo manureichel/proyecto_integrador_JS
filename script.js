@@ -4,6 +4,7 @@ const timestampToRelativeTime = (timestamp) =>
   DateTime.fromMillis(timestamp).minus({ seconds: 1 }).toRelative();
 
 let taskList = [];
+let isDragging = false;
 
 let taskListDOM = document.getElementById("task--list");
 let leftTasks = document.getElementById("left-text");
@@ -73,7 +74,6 @@ addButton.onclick = (e) => {
 };
 
 function updateTasksOnDOM(taskList) {
-  console.table(taskList);
   taskListDOM.innerHTML = "";
   for (let i in taskList) {
     let taskItem = document.createElement("div");
@@ -132,7 +132,6 @@ function updateTasksOnDOM(taskList) {
     // Event listener para el botón de eliminar tarea
     deleteButton.addEventListener("click", (e) => {
       e.preventDefault();
-      console.log(e.target.id);
       taskPosition = e.target.id.split("-")[2];
 
       Swal.fire({
@@ -146,7 +145,6 @@ function updateTasksOnDOM(taskList) {
         confirmButtonText: "¡Sí, borrala!",
       }).then((result) => {
         if (result.isConfirmed) {
-          console.log("voy a borrar: ", taskPosition);
           deleteTask(taskPosition);
           Swal.fire({
             title: "¡Borrada!",
@@ -180,7 +178,6 @@ function updateTasksOnDOM(taskList) {
         });
 
         if (text) {
-          console.log(text, i);
           taskList[i].task = text;
           updateTasksOnDOM(taskList);
           Swal.fire({
@@ -252,29 +249,33 @@ Sortable.create(taskListDOM, {
   animation: 300,
   easing: "cubic-bezier(0.34, 1.56, 0.64, 1)",
 
+  // Evento que se ejecuta cuando se empieza a arrastrar un elemento
+  onStart: function () {
+    isDragging = true;
+  },
+
   // Evento que se ejecuta cuando se termina de arrastrar un elemento
-  onEnd: function (event) {
-    event.to;
-    event.from;
-    // interchange(taskList, event.oldIndex, event.newIndex);
+  onEnd: function (evt) {
+    isDragging = false;
   },
 
   store: {
     set: function (sortable) {
       const orden = sortable.toArray();
-      console.log(orden);
 
-      //Reorder array according to a new order
       let reordererTaskList = [];
 
       for (let i = 0; i < orden.length; i++) {
-        console.log(parseInt(orden[i]));
         reordererTaskList[i] = taskList[parseInt(orden[i])];
       }
       taskList = structuredClone(reordererTaskList);
       localStorage.setItem("taskList", JSON.stringify(taskList));
       updateTasksOnDOM(taskList);
-      console.log("taskList", taskList);
     },
   },
 });
+
+// Actualiza el DOM cada 5 segundos
+setInterval(() => {
+  !isDragging ? updateTasksOnDOM(taskList) : null;
+}, 5000);
