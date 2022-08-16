@@ -1,7 +1,3 @@
-// const DateTime = luxon.DateTime;
-
-// console.log(DateTime.local().toLocaleString(DateTime.DATE_FULL));
-
 const DateTime = luxon.DateTime;
 
 const timestampToRelativeTime = (timestamp) =>
@@ -17,6 +13,22 @@ let searchBox = document.getElementById("search-box");
 let showAllButton = document.getElementById("show-all-button");
 let showActiveButton = document.getElementById("show-active-button");
 let showCompletedButton = document.getElementById("show-completed-button");
+
+showAllButton.addEventListener("click", () => {
+  updateTasksOnDOM(taskList);
+
+})
+
+showActiveButton.addEventListener("click", ()=>{
+  const taskFiltrada = taskList.filter(task => !task.isCompleted);
+  updateTasksOnDOM(taskFiltrada);
+} )
+
+showCompletedButton.addEventListener("click", ()=> {
+  const taskFiltrada = taskList.filter(task => task.isCompleted);
+  updateTasksOnDOM(taskFiltrada);
+  console.table(taskFiltrada);
+})
 
 const updateLeftTasks = (left) =>
   (leftTasks.innerText = `${left} tareas restantes`);
@@ -64,8 +76,8 @@ function updateTasksOnDOM(taskList) {
     taskItem.id = `task-${i}`;
     taskItem.setAttribute("data-id", i);
     taskItem.className = "card shadow mb-3 mt-4";
-    if (taskList[i].isCompleted)
-      taskItem.classList.add("task--item--completed");
+    taskList[i].isCompleted ? taskItem.classList.add("text-success","border-success") : ""
+    
 
     // card-body
     let taskBody = document.createElement("div");
@@ -117,6 +129,14 @@ function updateTasksOnDOM(taskList) {
       taskPosition = e.target.id.split("-")[2];
       deleteTask(taskPosition);
     });
+
+    // Event listener para el botón de finalizar
+    checkButton.addEventListener("click", (e) => {
+      taskList[i].isCompleted = !taskList[i].isCompleted;
+      localStorage.setItem("taskList", JSON.stringify(taskList));
+      updateTasksOnDOM(taskList);
+    });
+    
 
     // created-text
     let createdText = document.createElement("small");
