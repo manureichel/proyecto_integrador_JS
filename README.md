@@ -22,6 +22,9 @@ Con Sweet Alert implementé facilmente modales utilizados para la edición de ta
 ### 🔀 Sortable
 
 Sortable es una librería que permite convertir una sección de contenido, como un div, en un objeto arrastrable. Se implementa esta librería para arrastrar las tareas y reordenarlas. Se trabajó además con [Easings](https://easings.net/) para la animación a la hora de arrastrar.
+### 🧑🏻‍🏫 Intro.js
+
+Se incorpora la librería Intro.js. La misma se ejecuta solamente la primeras vez que se hace uso de la aplicación. Realiza un recorrido de cada uno de los elementos de la aplicación a modo de tutorial.
 
 ## ✏️ Funcionalidades del proyecto
 
