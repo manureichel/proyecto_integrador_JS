@@ -73,7 +73,7 @@ function updateTasksOnDOM(taskList) {
     taskItem.setAttribute("data-id", i);
     taskItem.className = "card shadow mb-3 mt-4";
     taskList[i].isCompleted
-      ? taskItem.classList.add("text-success", "border-success")
+      ? taskItem.classList.add("border-success", "light-green")
       : "";
 
     // card-body
@@ -123,15 +123,61 @@ function updateTasksOnDOM(taskList) {
     // Event listener para el botón de eliminar tarea
     deleteButton.addEventListener("click", (e) => {
       e.preventDefault();
-      taskPosition = e.target.id.split("-")[2];
-      deleteTask(taskPosition);
+      Swal.fire({
+        title: "¿Estás seguro que deseas borrar la tarea?",
+        text: "Se eliminará permanentemente",
+        icon: "warning",
+        showCancelButton: true,
+        cancelButtonText: "Cancelar",
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "¡Sí, borrala!",
+      }).then((result) => {
+        if (result.isConfirmed) {
+          taskPosition = e.target.id.split("-")[2];
+          deleteTask(taskPosition);
+          Swal.fire({
+            title: "¡Borrada!",
+            text: "La tarea fue eliminada",
+            icon: "success",
+            timer: 1800,
+          });
+        }
+      });
     });
 
-    // Event listener para el botón de finalizar
+    // Event listener para el botón de checkear tarea
     checkButton.addEventListener("click", (e) => {
       taskList[i].isCompleted = !taskList[i].isCompleted;
       localStorage.setItem("taskList", JSON.stringify(taskList));
       updateTasksOnDOM(taskList);
+    });
+
+    // Event listener para el botón de editar
+
+    editButton.addEventListener("click", (e) => {
+      (async () => {
+        const { value: text } = await Swal.fire({
+          input: "textarea",
+          inputLabel: "Editar la tarea",
+          inputPlaceholder: taskList[i].task,
+          inputAttributes: {
+            "aria-label": "Edita aquí la tarea",
+          },
+          showCancelButton: true,
+        });
+
+        if (text) {
+          console.log(text, i);
+          taskList[i].task = text;
+          updateTasksOnDOM(taskList);
+          Swal.fire({
+            title: "La tarea se ha editado",
+            icon: "success",
+            timer: 1800,
+          });
+        }
+      })();
     });
 
     // created-text
@@ -157,13 +203,12 @@ function updateTasksOnDOM(taskList) {
 const addNewTask = (newTask) => {
   if (newTask !== "" && newTask) {
     taskList = [
-      ...taskList,
-      // { task: newTask, date: getDate(), isCompleted: false },
       {
         task: newTask,
         date: Date.now(),
         isCompleted: false,
       },
+      ...taskList,
     ];
     Toastify({
       text: `Nueva tarea creada`,
@@ -179,6 +224,20 @@ const addNewTask = (newTask) => {
 };
 
 const deleteTask = (taskToDelete) => {
+  Swal.fire({
+    title: "Are you sure?",
+    text: "You won't be able to revert this!",
+    icon: "warning",
+    showCancelButton: true,
+    confirmButtonColor: "#3085d6",
+    cancelButtonColor: "#d33",
+    confirmButtonText: "Yes, delete it!",
+  }).then((result) => {
+    if (result.isConfirmed) {
+      Swal.fire("Deleted!", "Your file has been deleted.", "success");
+    }
+  });
+
   deleted = taskList.splice(taskToDelete, 1);
   localStorage.setItem("taskList", JSON.stringify(taskList));
   updateTasksOnDOM(taskList);
