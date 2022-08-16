@@ -274,8 +274,3 @@ Sortable.create(taskListDOM, {
     },
   },
 });
-
-// Actualiza el DOM cada 5 segundos
-setInterval(() => {
-  !isDragging ? updateTasksOnDOM(taskList) : null;
-}, 5000);
