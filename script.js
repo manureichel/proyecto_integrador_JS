@@ -101,6 +101,7 @@ function updateTasksOnDOM(taskList) {
     // button-group-flex-items
     let buttonGroupFlexItems = document.createElement("div");
     buttonGroupFlexItems.className = "btn-group-sm";
+    buttonGroupFlexItems.id = "button-group-flex-items";
     buttonGroupFlexItems.role = "group";
 
     // edit-button
@@ -274,3 +275,59 @@ Sortable.create(taskListDOM, {
     },
   },
 });
+
+// Intro la primera vez que corre la aplicación
+
+const hasRunIntro = localStorage.getItem("hasRunIntro"); // Para que se ejecutre solo la priemra vez que se cargue la página
+if (hasRunIntro !== "1") {
+  taskList = [
+    { task: "Tarea de prueba Inicial", date: Date.now(), isCompleted: false },
+    { task: "Otra tarea ya realizada", date: Date.now(), isCompleted: true },
+  ];
+  console.log("estoy aca");
+  updateTasksOnDOM(taskList);
+  console.log("y ahoraacá");
+  introJs()
+    .setOptions({
+      nextLabel: "Siguiente",
+      prevLabel: "Atrás",
+      doneLabel: "¡Listo!",
+
+      steps: [
+        {
+          intro:
+            "Bienvenido al gestor de tareas. \n\n A continuación, te mostramos una breve introducción sobre cómo funciona.",
+        },
+        {
+          element: inputText,
+          intro: "En este campo ingresas el texto de la tarea",
+        },
+        {
+          element: addButton,
+          intro: "Y presionando en este botón o enter creas la tarea",
+        },
+        {
+          element: searchBox,
+          intro: "En este campo podes buscar una tarea",
+        },
+        {
+          element: document.getElementById("filter-group"),
+          intro: "Acá podes filtrar las tareas según esten terminadas o no.",
+        },
+        {
+          element: document.getElementById("task-0"),
+          intro:
+            "Esta es una tarea ya creada. Es posible crear otras y arrastrarlas para cambiar su posición",
+        },
+        {
+          element: document.getElementById("button-group-flex-items"),
+          intro: "Aquí podes editar, chequear o borrar la tarea.",
+        },
+        {
+          intro: "¡Ya podes empezar a trabajar!",
+        },
+      ],
+    })
+    .start();
+  localStorage.setItem("hasRunIntro", "1");
+}
