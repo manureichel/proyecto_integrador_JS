@@ -16,7 +16,6 @@ let showCompletedButton = document.getElementById("show-completed-button");
 
 showAllButton.addEventListener("click", () => {
   updateTasksOnDOM(taskList);
-
 })
 
 showActiveButton.addEventListener("click", ()=>{
@@ -27,7 +26,6 @@ showActiveButton.addEventListener("click", ()=>{
 showCompletedButton.addEventListener("click", ()=> {
   const taskFiltrada = taskList.filter(task => task.isCompleted);
   updateTasksOnDOM(taskFiltrada);
-  console.table(taskFiltrada);
 })
 
 const updateLeftTasks = (left) =>
@@ -39,7 +37,6 @@ const loadTaskList = () => {
     taskList = JSON.parse(taskListJSON);
     updateTasksOnDOM(taskList);
     updateLeftTasks(taskList.length);
-    console.log(taskList ? taskList : "No hay tareas");
   }
 };
 
@@ -207,13 +204,13 @@ Sortable.create(taskListDOM, {
   store: {
     set: function (sortable) {
       const orden = sortable.toArray();
-      console.log(orden);
+      // console.log(orden);
 
       //Reorder array according to a new order
       let reordererTaskList = [];
 
       for (const element of orden) {
-        console.log(parseInt(element));
+        // console.log(parseInt(element));
         reordererTaskList[parseInt(element)];
       }
     },
