@@ -56,14 +56,13 @@ searchBox.onkeyup = (e) => {
 
 addButton.onclick = (e) => {
   e.preventDefault();
-  if (inputText.value !== "") {
+  if (inputText.value.trim().length) {
     addNewTask(inputText.value);
     inputText.value = "";
     updateTasksOnDOM(taskList);
     updateLeftTasks(taskList.length);
     localStorage.setItem("taskList", JSON.stringify(taskList));
   } else {
-    //sweet alert para que no se pueda crear una tarea vacía
     Swal.fire({
       icon: "error",
       title: "Oops...",
@@ -180,6 +179,7 @@ function updateTasksOnDOM(taskList) {
 
         if (text) {
           taskList[i].task = text;
+          localStorage.setItem("taskList", JSON.stringify(taskList));
           updateTasksOnDOM(taskList);
           Swal.fire({
             title: "La tarea se ha editado",
@@ -284,9 +284,7 @@ if (hasRunIntro !== "1") {
     { task: "Tarea de prueba Inicial", date: Date.now(), isCompleted: false },
     { task: "Otra tarea ya realizada", date: Date.now(), isCompleted: true },
   ];
-  console.log("estoy aca");
   updateTasksOnDOM(taskList);
-  console.log("y ahoraacá");
   introJs()
     .setOptions({
       nextLabel: "Siguiente",
@@ -296,7 +294,7 @@ if (hasRunIntro !== "1") {
       steps: [
         {
           intro:
-            "Bienvenido al gestor de tareas. \n\n A continuación, te mostramos una breve introducción sobre cómo funciona.",
+            "Bienvenido al gestor de tareas. A continuación, te mostramos una breve introducción sobre cómo funciona.",
         },
         {
           element: inputText,
