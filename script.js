@@ -29,8 +29,11 @@ showCompletedButton.addEventListener("click", () => {
   updateTasksOnDOM(taskFiltrada);
 });
 
-const updateLeftTasks = (left) =>
-  (leftTasks.innerText = `${left} tareas restantes`);
+const updateLeftTasks = (left) => {
+  left
+    ? (leftTasks.innerText = `${left} tareas`)
+    : (leftTasks.innerText = "No hay tareas");
+};
 
 const loadTaskList = () => {
   const taskListJSON = localStorage.getItem("taskList");
@@ -42,8 +45,7 @@ const loadTaskList = () => {
 };
 
 loadTaskList();
-
-updateLeftTasks(leftTasks.length ? taskList.length : 0); // si no está definido se muestra 0 tareas restantes
+updateLeftTasks(taskList.length);
 
 // event listener para searchBox
 searchBox.onkeyup = (e) => {
