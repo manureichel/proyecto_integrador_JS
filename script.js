@@ -74,65 +74,112 @@ addButton.onclick = (e) => {
   }
 };
 
+// función para crear elementos nuevos desde updateTasksOnDOM();
+function createNewElement(element) {
+  let newElement = document.createElement(element.tagname);
+
+  element.id ? (newElement.id = element.id) : null;
+  element.attribute
+    ? newElement.setAttribute(element.attribute.name, element.attribute.value)
+    : null;
+  element.class ? (newElement.className = element.class) : null;
+  element.text ? (newElement.textContent = element.text) : null;
+  element.type ? (newElement.type = element.type) : null;
+  for (let i in element.appended) newElement.appendChild(element.appended[i]);
+
+  return newElement;
+}
+
 function updateTasksOnDOM(taskList) {
   taskListDOM.innerHTML = "";
   for (let i in taskList) {
-    let taskItem = document.createElement("div");
-    taskItem.id = `task-${i}`;
-    taskItem.setAttribute("data-id", i);
-    taskItem.className = "card shadow mb-3 mt-4";
-    taskList[i].isCompleted
-      ? taskItem.classList.add("border-success", "light-green")
-      : "";
-
-    // card-body
-    let taskBody = document.createElement("div");
-    taskBody.className = "card-body";
-
     // card-text
-    let cardText = document.createElement("p");
-    cardText.textContent = taskList[i].task;
-    cardText.className = "card-text";
-
-    // button-group-flex
-    let buttonGroupFlex = document.createElement("div");
-    buttonGroupFlex.className =
-      "d-flex justify-content-between align-items-center";
-
-    // button-group-flex-items
-    let buttonGroupFlexItems = document.createElement("div");
-    buttonGroupFlexItems.className = "btn-group-sm";
-    buttonGroupFlexItems.id = "button-group-flex-items";
-    buttonGroupFlexItems.role = "group";
+    let cardText = createNewElement({
+      tagname: "p",
+      class: "card-text",
+      text: taskList[i].task,
+    });
 
     // edit-button
-    let editButton = document.createElement("button");
-    editButton.className = "btn btn-outline-primary mx-1";
-    editButton.type = "button";
-    let editIcon = document.createElement("i");
-    editIcon.className = "fas fa-edit";
-    editButton.appendChild(editIcon);
+    let editIcon = createNewElement({
+      tagname: "i",
+      class: "fas fa-edit",
+    });
+
+    let editButton = createNewElement({
+      tagname: "button",
+      class: "btn btn-outline-primary mx-1",
+      type: "button",
+      appended: [editIcon],
+    });
 
     // check-button
-    let checkButton = document.createElement("button");
-    checkButton.className = "btn btn-outline-primary mx-1";
-    checkButton.type = "button";
-    let checkIcon = document.createElement("i");
-    checkIcon.className = "fas fa-check";
-    checkButton.appendChild(checkIcon);
+    let checkIcon = createNewElement({
+      tagname: "i",
+      class: "fas fa-check",
+    });
+
+    let checkButton = createNewElement({
+      tagname: "button",
+      class: "btn btn-outline-primary mx-1",
+      type: "button",
+      appended: [checkIcon],
+    });
 
     // delete-button
-    let deleteButton = document.createElement("button");
-    deleteButton.className = "btn btn-outline-primary mx-1";
-    deleteButton.type = "button";
-    deleteButton.id = `delete-task-${i}`;
-    let deleteIcon = document.createElement("i");
-    deleteIcon.className = "fas fa-trash-alt";
-    deleteIcon.id = `delete-task-${i}`;
-    deleteButton.appendChild(deleteIcon);
+    let deleteIcon = createNewElement({
+      tagname: "i",
+      class: "fas fa-trash-alt",
+      id: `delete-task-${i}`,
+    });
+    let deleteButton = createNewElement({
+      tagname: "button",
+      class: "btn btn-outline-danger mx-1",
+      type: "button",
+      appended: [deleteIcon],
+    });
+
+    // created-text
+    let createdText = document.createElement("small");
+    createdText.className = "text-muted";
+    createdText.textContent = timestampToRelativeTime(taskList[i].date);
+
+    // button-group-flex-items
+    let buttonGroupFlexItems = createNewElement({
+      tagname: "div",
+      class: "btn-group-sm",
+      id: "button-group-flex-items",
+      appended: [editButton, checkButton, deleteButton],
+    });
+
+    // button-group-flex
+    let buttonGroupFlex = createNewElement({
+      tagname: "div",
+      class: "d-flex justify-content-between align-items-center",
+      appended: [buttonGroupFlexItems, createdText],
+    });
+
+    let taskBody = createNewElement({
+      tagname: "div",
+      class: "card-body",
+      appended: [cardText, buttonGroupFlex],
+    });
+
+    let taskItem = createNewElement({
+      tagname: "div",
+      class: "card shadow mb-3 mt-4",
+      id: `task-${i}`,
+      attribute: { name: "data-id", value: i },
+      appended: [taskBody],
+    });
+
+    // Pone en verde las tareas terminadas
+    taskList[i].isCompleted
+      ? taskItem.classList.add("border-success", "light-green")
+      : null;
 
     // Event listener para el botón de eliminar tarea
-    deleteButton.addEventListener("click", (e) => {
+    eventListenerDelete = deleteButton.addEventListener("click", (e) => {
       e.preventDefault();
       taskPosition = e.target.id.split("-")[2];
 
@@ -192,21 +239,7 @@ function updateTasksOnDOM(taskList) {
       })();
     });
 
-    // created-text
-    let createdText = document.createElement("small");
-    createdText.className = "text-muted";
-    createdText.textContent = timestampToRelativeTime(taskList[i].date);
-
-    // agrega los elementos al DOM
-    taskBody.appendChild(cardText);
-    taskItem.appendChild(taskBody);
-    buttonGroupFlex.appendChild(buttonGroupFlexItems);
-    buttonGroupFlex.appendChild(createdText);
-    buttonGroupFlexItems.appendChild(editButton);
-    buttonGroupFlexItems.appendChild(checkButton);
-    buttonGroupFlexItems.appendChild(deleteButton);
     taskBody.appendChild(buttonGroupFlex);
-
     updateLeftTasks(taskList.length);
     taskListDOM.appendChild(taskItem);
   }
