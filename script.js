@@ -351,32 +351,35 @@ function runDemo() {
       steps: [
         {
           intro:
-            "Bienvenido al gestor de tareas. A continuación, te mostramos una breve introducción sobre cómo funciona.",
+            "Bienvenido al gestor de tareas. A continuación, una breve introducción.",
         },
         {
           element: inputText,
-          intro: "En este campo ingresas el texto de la tarea",
+          intro: "En este campo ingresas el texto de la tarea...",
         },
         {
           element: addButton,
-          intro: "Y presionando en este botón o enter creas la tarea",
+          intro:
+            "... y presionando en este botón o la tecla enter creas la tarea",
         },
         {
           element: searchBox,
-          intro: "En este campo podes buscar una tarea",
+          intro:
+            "En este campo podes buscar una tarea, los resultados se mostrarán a medida que existan coincidencias.",
         },
         {
           element: document.getElementById("filter-group"),
           intro: "Acá podes filtrar las tareas según esten terminadas o no.",
         },
         {
-          element: document.getElementById("task-0"),
+          element: document.getElementById("button-group-flex-items"),
           intro:
-            "Esta es una tarea ya creada. Es posible crear otras y arrastrarlas para cambiar su posición",
+            "Esta es una tarea ya creada.Acá podes editar, chequear o borrar la tarea.",
         },
         {
-          element: document.getElementById("button-group-flex-items"),
-          intro: "Aquí podes editar, chequear o borrar la tarea.",
+          element: document.getElementById("drag-item"),
+          intro:
+            "Desde este ícono podes arrastrar las tareas para reordenarlas.",
         },
         {
           intro: "¡Ya podes empezar a trabajar!",

@@ -1,42 +1,29 @@
 # 📝Task Manager 
 
-## 💻 Entrega: Librerías
+## 💻 Entrega: Fetch
 
-En esta entrega se incorporan librerías para agregar funcionalidades de manera sencilla al proyecto. Además se reemplaza el CSS utilizado hasta el momento por Bootstrap. 
-Se incorporan las funcionalidades de edición de tareas y mostrar filtrando por Todas, Finalizadas y pendientes.
+Se pide utilizar fetch para obtener información. Como este proyecto es bastante dinámico (no tiene muchos datos por defecto al comienzo), se plantea leer un archivo json con las tareas para la demo de la aplicación la primera vez que se corre la misma. 
+Tendría más sentido hacer un fetch sobre los datos de toda la lista de tareas, pero sería necesario también mantener dichos datos actualizados. Por lo que estuve viendo, con node:fs podría hacer esto, pero a efectos de mantener lo mas "front" posible el proyecto me limité por ahora a hacer la lectura de los datos de una tarea demo.
+### ✏️ Sobre el proyecto
 
-Las librerías agregadas son:
+La idea del proyecto de es una aplicación web de manejo de tareas. Donde el usuario pueda agregar nuevas tareas a una lista y gestionarla.
 
-### ⏱️ Luxon
+### Librerías Utilizadas en el Proyecto:
+#### ⏱️ Luxon
 
-Anteriormente ya se trabajaba con fechas mediante el objeto Date incluído de manera nativa en JS. Ahora se incluye Luxon para obtener de manera facil textos relativos de tiempo. De esta manera se agregan a cada tarea strings relacionados al tiempo que pasó desde que se creó la tarea.
+Se incluye Luxon para obtener de manera facil textos relativos de tiempo. De esta manera se agregan a cada tarea strings relacionados al tiempo que pasó desde que se creó la tarea.
 
-### 📤 Toastify 
+#### 📤 Toastify 
 
 Se agrega mediante Toastify JS un mensaje simple cuando se crea correctamente una tarea.
 
-### ⁉️ SweetAlert2
+#### ⁉️ SweetAlert2
 
 Con Sweet Alert implementé facilmente modales utilizados para la edición de tareas y para verificar que realmente se quiera eliminar una tarea.
 
-### 🔀 Sortable
+#### 🔀 Sortable
 
 Sortable es una librería que permite convertir una sección de contenido, como un div, en un objeto arrastrable. Se implementa esta librería para arrastrar las tareas y reordenarlas. Se trabajó además con [Easings](https://easings.net/) para la animación a la hora de arrastrar.
-### 🧑🏻‍🏫 Intro.js
+#### 🧑🏻‍🏫 Intro.js
 
 Se incorpora la librería Intro.js. La misma se ejecuta solamente la primeras vez que se hace uso de la aplicación. Realiza un recorrido de cada uno de los elementos de la aplicación a modo de tutorial.
-
-## ✏️ Funcionalidades del proyecto
-
-La idea del proyecto de es crear una aplicación web de manejo de tareas. Donde el usuario pueda agregar nuevas tareas a una lista y gestionarla.
-
-### 🔜 Como funcionalidades a futuro se plantean:
-
-* Crear y eliminar tareas individualmente.
-* Hacer un check a tareas terminadas.
-* Mostrar filtrando por tareas activas, terminadas, o todas.
-* Limpiar todas las tareas.
-* Visualización de hora de creación de tarea.
-* Tarea con fecha de vencimiento y mostrar tiempo restante.
-* Etiquetas para tareas urgentes.
-* Tareas arrastrables para re-ubicarlas en la lista.
