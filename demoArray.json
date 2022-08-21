@@ -1,0 +1,4 @@
+[
+  { "task": "Tarea de prueba Inicial", "date": 1661046527790, "isCompleted": false },
+  { "task": "Otra tarea ya realizada", "date": 1661046527710, "isCompleted": true }
+]

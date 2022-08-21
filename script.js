@@ -31,7 +31,7 @@ showCompletedButton.addEventListener("click", () => {
 
 const updateLeftTasks = (left) => {
   left
-    ? (leftTasks.innerText = `${left} tareas`)
+    ? (leftTasks.innerText = `Tareas: ${left}`)
     : (leftTasks.innerText = "No hay tareas");
 };
 
@@ -159,10 +159,23 @@ function updateTasksOnDOM(taskList) {
       appended: [buttonGroupFlexItems, createdText],
     });
 
+    let dragItemIcon = createNewElement({
+      tagname: "i",
+      id: "drag-item",
+      class: "drag-item fa-solid fa-arrows-up-down-left-right text-secondary",
+    });
+
+    // card-text and drag flex
+    let cardAndDragFlex = createNewElement({
+      tagname: "div",
+      class: "d-flex justify-content-between align-items-lg-start",
+      appended: [cardText, dragItemIcon],
+    });
+
     let taskBody = createNewElement({
       tagname: "div",
       class: "card-body",
-      appended: [cardText, buttonGroupFlex],
+      appended: [cardAndDragFlex, buttonGroupFlex],
     });
 
     let taskItem = createNewElement({
@@ -279,6 +292,7 @@ Sortable.create(taskListDOM, {
   group: {
     name: "lista-tareas",
   },
+  handle: ".drag-item",
   sort: true,
   delay: 200,
   delayOnTouchOnly: true,
@@ -313,13 +327,21 @@ Sortable.create(taskListDOM, {
 
 // Intro la primera vez que corre la aplicación
 
-const hasRunIntro = localStorage.getItem("hasRunIntro"); // Para que se ejecutre solo la priemra vez que se cargue la página
-if (hasRunIntro !== "1") {
-  taskList = [
-    { task: "Tarea de prueba Inicial", date: Date.now(), isCompleted: false },
-    { task: "Otra tarea ya realizada", date: Date.now(), isCompleted: true },
-  ];
-  updateTasksOnDOM(taskList);
+const getDemoArray = async () => {
+  fetch("./demoArray.json")
+    .then((response) => response.json())
+    .then((data) => {
+      taskList = data;
+      localStorage.setItem("taskList", JSON.stringify(data));
+      updateTasksOnDOM(data);
+      runDemo();
+    });
+};
+
+const hasRunIntro = localStorage.getItem("hasRunIntro"); // Para que se ejecute solo la priemra vez que se cargue la página
+if (hasRunIntro !== "1") getDemoArray();
+
+function runDemo() {
   introJs()
     .setOptions({
       nextLabel: "Siguiente",
