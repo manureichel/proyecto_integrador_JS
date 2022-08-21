@@ -6,14 +6,15 @@ const timestampToRelativeTime = (timestamp) =>
 let taskList = [];
 let isDragging = false;
 
-let taskListDOM = document.getElementById("task--list");
-let leftTasks = document.getElementById("left-text");
-let addButton = document.getElementById("add-button");
-let inputText = document.getElementById("input-text");
-let searchBox = document.getElementById("search-box");
-let showAllButton = document.getElementById("show-all-button");
-let showActiveButton = document.getElementById("show-active-button");
-let showCompletedButton = document.getElementById("show-completed-button");
+const image = document.getElementById("pokeImage");
+const taskListDOM = document.getElementById("task--list");
+const leftTasks = document.getElementById("left-text");
+const addButton = document.getElementById("add-button");
+const inputText = document.getElementById("input-text");
+const searchBox = document.getElementById("search-box");
+const showAllButton = document.getElementById("show-all-button");
+const showActiveButton = document.getElementById("show-active-button");
+const showCompletedButton = document.getElementById("show-completed-button");
 
 showAllButton.addEventListener("click", () => {
   updateTasksOnDOM(taskList);
@@ -324,6 +325,17 @@ Sortable.create(taskListDOM, {
     },
   },
 });
+
+// Toma una imagen random de un pokemón y se ubica junto al título.
+const getRandomPokemonImage = async () => {
+  const response = await fetch(
+    `https://pokeapi.co/api/v2/pokemon/${Math.floor(Math.random() * 802)}`
+  );
+  const data = await response.json();
+  image.src = data.sprites.front_default;
+  image.style.width = "4rem";
+};
+getRandomPokemonImage();
 
 // Intro la primera vez que corre la aplicación
 

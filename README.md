@@ -4,6 +4,8 @@
 
 Se pide utilizar fetch para obtener información. Como este proyecto es bastante dinámico (no tiene muchos datos por defecto al comienzo), se plantea leer un archivo json con las tareas para la demo de la aplicación la primera vez que se corre la misma. 
 Tendría más sentido hacer un fetch sobre los datos de toda la lista de tareas, pero sería necesario también mantener dichos datos actualizados. Por lo que estuve viendo, con node:fs podría hacer esto, pero a efectos de mantener lo mas "front" posible el proyecto me limité por ahora a hacer la lectura de los datos de una tarea demo.
+
+Para ponerle onda, agregué un footer que en el que, mediante un fetch , se agrega una imagen random de un pokemon desde [ésta api](https://pokeapi.co/).
 ### ✏️ Sobre el proyecto
 
 La idea del proyecto de es una aplicación web de manejo de tareas. Donde el usuario pueda agregar nuevas tareas a una lista y gestionarla.
