@@ -1,14 +1,18 @@
-# 📝Task Manager 
-
-## 💻 Entrega: Fetch
-
-Se pide utilizar fetch para obtener información. Como este proyecto es bastante dinámico (no tiene muchos datos por defecto al comienzo), se plantea leer un archivo json con las tareas para la demo de la aplicación la primera vez que se corre la misma. 
-Tendría más sentido hacer un fetch sobre los datos de toda la lista de tareas, pero sería necesario también mantener dichos datos actualizados. Por lo que estuve viendo, con node:fs podría hacer esto, pero a efectos de mantener lo mas "front" posible el proyecto me limité por ahora a hacer la lectura de los datos de una tarea demo.
-
-Para ponerle onda, agregué un footer que en el que, mediante un fetch , se agrega una imagen random de un pokemon desde [ésta api](https://pokeapi.co/).
+# 📝Task Manager
 ### ✏️ Sobre el proyecto
 
-La idea del proyecto de es una aplicación web de manejo de tareas. Donde el usuario pueda agregar nuevas tareas a una lista y gestionarla.
+La idea del proyecto es una aplicación web de manejo de tareas. Donde el usuario pueda agregar nuevas tareas a una lista y gestionarla.
+### 💻 Funcionalidades:
+* Tutorial de uso en la primer ejecución.
+* Crear y eliminar tareas individualmente.
+* Edición de tareas.
+* Búsqueda de Tareas.
+* Hacer un check a tareas terminadas.
+* Mostrar filtrando por tareas activas, terminadas, o todas.
+* Visualización del dato de hace cuanto tiempo se creó la tarea.
+* Drag n Drop: se pueden arrastrar tareas desde un ícono y reubicarlas.
+* Almacenamiento en Local Storage.
+
 
 ### Librerías Utilizadas en el Proyecto:
 #### ⏱️ Luxon
@@ -29,3 +33,4 @@ Sortable es una librería que permite convertir una sección de contenido, como 
 #### 🧑🏻‍🏫 Intro.js
 
 Se incorpora la librería Intro.js. La misma se ejecuta solamente la primeras vez que se hace uso de la aplicación. Realiza un recorrido de cada uno de los elementos de la aplicación a modo de tutorial.
+
