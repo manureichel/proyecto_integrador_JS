@@ -3,8 +3,9 @@ const DateTime = luxon.DateTime;
 const timestampToRelativeTime = (timestamp) =>
   DateTime.fromMillis(timestamp).minus({ seconds: 1 }).toRelative();
 
-let taskList = [];
-let isDragging = false;
+let taskList = []; // Array Principal
+
+let isDragging = false; // Utilizado para
 
 const image = document.getElementById("pokeImage");
 const taskListDOM = document.getElementById("task--list");
@@ -36,17 +37,13 @@ const updateLeftTasks = (left) => {
     : (leftTasks.innerText = "No hay tareas");
 };
 
-const loadTaskList = () => {
+const loadTaskList = (() => {
   const taskListJSON = localStorage.getItem("taskList");
   if (taskListJSON) {
     taskList = JSON.parse(taskListJSON);
     updateTasksOnDOM(taskList);
-    updateLeftTasks(taskList.length);
   }
-};
-
-loadTaskList();
-updateLeftTasks(taskList.length);
+})();
 
 // event listener para searchBox
 searchBox.onkeyup = (e) => {
@@ -57,13 +54,13 @@ searchBox.onkeyup = (e) => {
   updateTasksOnDOM(filteredTasks);
 };
 
+// event listener para agregar tarea
 addButton.onclick = (e) => {
   e.preventDefault();
   if (inputText.value.trim().length) {
     addNewTask(inputText.value);
     inputText.value = "";
     updateTasksOnDOM(taskList);
-    updateLeftTasks(taskList.length);
     localStorage.setItem("taskList", JSON.stringify(taskList));
   } else {
     Swal.fire({
@@ -93,6 +90,9 @@ function createNewElement(element) {
 
 function updateTasksOnDOM(taskList) {
   taskListDOM.innerHTML = "";
+
+  updateLeftTasks(taskList.length);
+
   for (let i in taskList) {
     // card-text
     let cardText = createNewElement({
@@ -254,7 +254,6 @@ function updateTasksOnDOM(taskList) {
     });
 
     taskBody.appendChild(buttonGroupFlex);
-    updateLeftTasks(taskList.length);
     taskListDOM.appendChild(taskItem);
   }
 }
@@ -286,9 +285,9 @@ const deleteTask = (taskToDelete) => {
   deleted = taskList.splice(taskToDelete, 1);
   localStorage.setItem("taskList", JSON.stringify(taskList));
   updateTasksOnDOM(taskList);
-  updateLeftTasks(taskList.length);
 };
 
+// Función de Drag n Drop.
 Sortable.create(taskListDOM, {
   group: {
     name: "lista-tareas",
@@ -300,16 +299,7 @@ Sortable.create(taskListDOM, {
   animation: 300,
   easing: "cubic-bezier(0.34, 1.56, 0.64, 1)",
 
-  // Evento que se ejecuta cuando se empieza a arrastrar un elemento
-  onStart: function () {
-    isDragging = true;
-  },
-
-  // Evento que se ejecuta cuando se termina de arrastrar un elemento
-  onEnd: function (evt) {
-    isDragging = false;
-  },
-
+  // Actualiza en el array el nuevo orden.
   store: {
     set: function (sortable) {
       const orden = sortable.toArray();
@@ -337,8 +327,7 @@ const getRandomPokemonImage = async () => {
 };
 getRandomPokemonImage();
 
-// Intro la primera vez que corre la aplicación
-
+// Tutorial la primera vez que corre la aplicación
 const getDemoArray = async () => {
   fetch("./demoArray.json")
     .then((response) => response.json())
