@@ -1,11 +1,10 @@
-const DateTime = luxon.DateTime;
-
-const timestampToRelativeTime = (timestamp) =>
-  DateTime.fromMillis(timestamp).minus({ seconds: 1 }).toRelative();
-
 let taskList = []; // Array Principal
 
-let isDragging = false; // Utilizado para
+const DateTime = luxon.DateTime;
+
+// Devuelve el tiempo relativo para imprimir en tarea
+const timestampToRelativeTime = (timestamp) =>
+  DateTime.fromMillis(timestamp).minus({ seconds: 1 }).toRelative();
 
 const image = document.getElementById("pokeImage");
 const taskListDOM = document.getElementById("task--list");
